@@ -1,13 +1,13 @@
 CXXFLAGS = -std=gnu++0x -Wall
 LDLIBS = -lstdc++
 .PHONY: all clean
-all: example-client
+all: ezesampleclient
 clean:
 	-rm  *.o
 testserver: node_modules
 	node example-server.js
 node_modules:
 	npm install
-example-client: example-client.o easywsclient.o
-example-client.o: example-client.cpp easywsclient.hpp
-easywsclient.o: easywsclient.cpp easywsclient.hpp
+ezesampleclient: ezesampleclient.o ezewbsclient.o
+ezesampleclient.o: ezesampleclient.cpp ezewbsclient.hpp
+ezewbsclient.o: ezewbsclient.cpp ezewbsclient.hpp

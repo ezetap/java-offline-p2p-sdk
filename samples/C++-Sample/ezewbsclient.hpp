@@ -1,24 +1,24 @@
-#ifndef EASYWSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD
-#define EASYWSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD
+#ifndef EZEWBSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD
+#define EZEWBSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD
 
 // This code comes from:
-// https://github.com/dhbaird/easywsclient
+// https://github.com/dhbaird/ezewbsclient
 //
 // To get the latest version:
-// wget https://raw.github.com/dhbaird/easywsclient/master/easywsclient.hpp
-// wget https://raw.github.com/dhbaird/easywsclient/master/easywsclient.cpp
+// wget https://raw.github.com/dhbaird/ezewbsclient/master/ezewbsclient.hpp
+// wget https://raw.github.com/dhbaird/ezewbsclient/master/ezewbsclient.cpp
 
 #include <string>
 #include <vector>
 
-namespace easywsclient {
+namespace ezewbsclient {
 
 struct Callback_Imp { virtual void operator()(const std::string& message) = 0; };
 struct BytesCallback_Imp { virtual void operator()(const std::vector<uint8_t>& message) = 0; };
 
-class WebSocket {
+class EzeWebSocket {
   public:
-    typedef WebSocket * pointer;
+    typedef EzeWebSocket * pointer;
     typedef enum readyStateValues { CLOSING, CLOSED, CONNECTING, OPEN } readyStateValues;
 
     // Factories:
@@ -27,7 +27,7 @@ class WebSocket {
     static pointer from_url_no_mask(const std::string& url, const std::string& origin = std::string());
 
     // Interfaces:
-    virtual ~WebSocket() { }
+    virtual ~EzeWebSocket() { }
     virtual void poll(int timeout = 0) = 0; // timeout in milliseconds
     virtual void send(const std::string& message) = 0;
     virtual void sendBinary(const std::string& message) = 0;
@@ -67,6 +67,6 @@ class WebSocket {
     virtual void _dispatchBinary(BytesCallback_Imp& callable) = 0;
 };
 
-} // namespace easywsclient
+} // namespace ezewbsclient
 
-#endif /* EASYWSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD */
+#endif /* EZEWBSCLIENT_HPP_20120819_MIOFVASDTNUASZDQPLFD */

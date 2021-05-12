@@ -1,5 +1,5 @@
-#include "easywsclient.hpp"
-//#include "easywsclient.cpp" // <-- include only if you don't want compile separately
+#include "ezewbsclient.hpp"
+//#include "ezewbsclient.cpp" // <-- include only if you don't want compile separately
 #ifdef _WIN32
 #pragma comment( lib, "ws2_32" )
 #include <WinSock2.h>
@@ -9,8 +9,8 @@
 #include <string>
 #include <iostream>
 
-using easywsclient::WebSocket;
-static WebSocket::pointer ws = NULL;
+using ezewbsclient::EzeWebSocket;
+static EzeWebSocket::pointer ws = NULL;
 
 void handle_message(const std::string & message)
 {
@@ -85,12 +85,12 @@ int main()
             break;
     }    
 
-    ws = WebSocket::from_url(web_url);
+    ws = EzeWebSocket::from_url(web_url);
     assert(ws);
     //ws->send("goodbye");
     //ws->send("hello");
     ws->send(request_body);
-    while (ws->getReadyState() != WebSocket::CLOSED) {
+    while (ws->getReadyState() != EzeWebSocket::CLOSED) {
       ws->poll();
       ws->dispatch(handle_message);
     }

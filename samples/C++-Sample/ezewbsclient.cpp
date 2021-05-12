@@ -73,10 +73,10 @@
 #include <vector>
 #include <string>
 
-#include "easywsclient.hpp"
+#include "ezewbsclient.hpp"
 
-using easywsclient::Callback_Imp;
-using easywsclient::BytesCallback_Imp;
+using ezewbsclient::Callback_Imp;
+using ezewbsclient::BytesCallback_Imp;
 
 namespace { // private module-only namespace
 
@@ -111,7 +111,7 @@ socket_t hostname_connect(const std::string& hostname, int port) {
 }
 
 
-class _DummyWebSocket : public easywsclient::WebSocket
+class _DummyWebSocket : public ezewbsclient::EzeWebSocket
 {
   public:
     void poll(int timeout) { }
@@ -126,7 +126,7 @@ class _DummyWebSocket : public easywsclient::WebSocket
 };
 
 
-class _RealWebSocket : public easywsclient::WebSocket
+class _RealWebSocket : public ezewbsclient::EzeWebSocket
 {
   public:
     // http://tools.ietf.org/html/rfc6455#section-5.2  Base Framing Protocol
@@ -454,7 +454,7 @@ class _RealWebSocket : public easywsclient::WebSocket
 };
 
 
-easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, const std::string& origin) {
+ezewbsclient::EzeWebSocket::pointer from_url(const std::string& url, bool useMask, const std::string& origin) {
     char host[512];
     int port;
     char path[512];
@@ -483,7 +483,7 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
         fprintf(stderr, "ERROR: Could not parse WebSocket url: %s\n", url.c_str());
         return NULL;
     }
-    //fprintf(stderr, "easywsclient: connecting: host=%s port=%d path=/%s\n", host, port, path);
+    //fprintf(stderr, "ezewbsclient: connecting: host=%s port=%d path=/%s\n", host, port, path);
     socket_t sockfd = hostname_connect(host, port);
     if (sockfd == INVALID_SOCKET) {
         fprintf(stderr, "Unable to connect to %s:%d\n", host, port);
@@ -528,28 +528,28 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
     fcntl(sockfd, F_SETFL, O_NONBLOCK);
 #endif
     //fprintf(stderr, "Connected to: %s\n", url.c_str());
-    return easywsclient::WebSocket::pointer(new _RealWebSocket(sockfd, useMask));
+    return ezewbsclient::EzeWebSocket::pointer(new _RealWebSocket(sockfd, useMask));
 }
 
 } // end of module-only namespace
 
 
 
-namespace easywsclient {
+namespace ezewbsclient {
 
-WebSocket::pointer WebSocket::create_dummy() {
+EzeWebSocket::pointer EzeWebSocket::create_dummy() {
     static pointer dummy = pointer(new _DummyWebSocket);
     return dummy;
 }
 
 
-WebSocket::pointer WebSocket::from_url(const std::string& url, const std::string& origin) {
+EzeWebSocket::pointer EzeWebSocket::from_url(const std::string& url, const std::string& origin) {
     return ::from_url(url, true, origin);
 }
 
-WebSocket::pointer WebSocket::from_url_no_mask(const std::string& url, const std::string& origin) {
+EzeWebSocket::pointer EzeWebSocket::from_url_no_mask(const std::string& url, const std::string& origin) {
     return ::from_url(url, false, origin);
 }
 
 
-} // namespace easywsclient
+} // namespace ezewbsclient
